@@ -1,5 +1,12 @@
 Rails.application.routes.draw do
   devise_for :users
   root to: 'pages#home'
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  resources :my_runs, except: [:update, :edit] do
+    collection do
+      resources :planned, only: [:create, :new]
+    end
+  end
+  resources :runs, only: [:index, :show] do
+    resources :run_participations, only: [:create]
+  end
 end
